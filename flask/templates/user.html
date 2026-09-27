@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="admin-page animate-in">
+<div class="container py-5">
+
+<div class="user-management-card shadow-2xl mx-auto overflow-hidden">
+
+<!-- ================= HEADER ================= -->
+<div class="premium-header d-flex justify-content-between align-items-center px-4 py-4">
+
+<div class="d-flex align-items-center">
+<div class="header-icon-circle me-3">
+<i class="fa-solid fa-id-card-clip fa-bounce-hover"></i>
+</div>
+
+<div>
+<h2 class="photomaton m-0 text-white display-6 fw-bold">
+CENTRE DE CONTRÔLE
+</h2>
+
+<div class="d-flex align-items-center mt-2">
+<span id="user-count" class="found-badge-xl shadow-lg">
+{{ users|length }} MEMBRES
+</span>
+</div>
+</div>
+</div>
+
+<a href="#section_gestion_utulisateur" class="btn-create-user-master">
+<i class="fa-solid fa-plus-circle me-2"></i>RECRÉER UN PROFIL
+</a>
+
+</div>
+
+
+<!-- ================= CONTENU ================= -->
+<div class="p-4 bg-white main-content-area">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} custom-alert border-0 shadow-sm mb-4">
+<i class="fa-solid fa-shield-check me-2"></i> {{ message }}
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<!-- ================= TABLE USERS ================= -->
+<div class="table-responsive custom-scrollbar">
+<table class="table table-hover align-middle mb-0" id="userTable">
+
+<thead>
+<tr class="studio-th-row">
+<th class="ps-4">PROFIL</th>
+<th>COLLABORATEUR</th>
+<th>DROITS</th>
+<th class="text-end pe-4">ACTIONS SYSTÈME</th>
+</tr>
+</thead>
+
+<tbody>
+{% for user in users %}
+<tr class="user-row-premium">
+    <!-- Modal suppression utilisateur -->
+<div class="modal fade" id="deleteUserModal{{ user.ID }}" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+      </div>
+
+      <div class="modal-footer">
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+            Annuler
+        </button>
+
+        <form method="POST"
+              action="{{ url_for('delete_user', user_id=user.ID) }}">
+            <button type="submit" class="btn btn-danger">
+                Supprimer
+            </button>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<td class="ps-4">
+<div class="user-avatar-premium">
+{{ user['Login'][0] | upper }}
+</div>
+</td>
+
+<td>
+<div class="fw-black text-dark fs-5">{{ user['Login'] }}</div>
+<div class="text-muted-studio small uppercase">ID-{{ user['ID'] }}</div>
+</td>
+
+<td>
+<div class="d-flex flex-wrap gap-1 role-stack">
+{% if user['Role'] %}
+{% for role in user['Role'].split(',') %}
+{% set r = role.strip() | upper %}
+<span class="badge-role-dynamic
+{% if 'ADMIN' in r %}br-admin
+{% elif 'SUPPRESSION' in r %}br-delete
+{% elif 'MODIFICATION' in r %}br-edit
+{% else %}br-read{% endif %}">
+{{ r }}
+</span>
+{% endfor %}
+{% else %}
+<span class="badge-role-none">AUCUN DROIT</span>
+{% endif %}
+</div>
+</td>
+
+<td class="text-end pe-4">
+
+{% if user['ID'] == session.get('user_id') %}
+    <span class="status-pill status-me">VOUS</span>
+
+{% elif user['ID'] == 1 %}
+    <span class="status-pill status-root">ROOT</span>
+
+{% else %}
+    <button type="button"
+            class="btn-action-delete"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteUserModal{{ user.ID }}">
+        <i class="fa-solid fa-user-xmark"></i>
+    </button>
+{% endif %}
+
+</td>
+
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+
+
+<!-- ================= CREATION UTILISATEUR ================= -->
+<div id="section_gestion_utulisateur"
+     class="glass-control-panel p-5 mt-5 rounded-5">
+
+<h3 class="fw-bold text-dark mb-4">
+CRÉER UN NOUVEAU PROFIL
+</h3>
+
+<form method="POST"
+      action="{{ url_for('liste_utilisateurs') }}"
+      class="row g-4">
+
+<div class="col-md-6">
+<label class="fw-bold mb-2">Identifiant</label>
+<input type="text" name="username" required class="form-control">
+</div>
+
+<div class="col-md-6">
+<label class="fw-bold mb-2">Mot de passe</label>
+<input type="password" name="password" required class="form-control">
+</div>
+
+<div class="col-md-6">
+<label class="fw-bold mb-2">Confirmer le mot de passe</label>
+<input type="password" name="confirmer_mdp" required class="form-control">
+</div>
+
+
+<!-- ✅ DROITS CORRIGÉS -->
+<div class="col-12">
+<label class="fw-bold mb-2 d-block">Droits d'accès</label>
+
+<div class="d-flex gap-4 flex-wrap">
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="roles" value="LECTURE">
+<label class="form-check-label">Lecture</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="roles" value="MODIFICATION">
+<label class="form-check-label">Modification</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="roles" value="SUPPRESSION">
+<label class="form-check-label">Suppression</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="roles" value="ADMIN">
+<label class="form-check-label">Admin</label>
+</div>
+
+</div>
+</div>
+
+
+<div class="col-12 text-end mt-3">
+<button type="submit"
+        class="btn btn-success px-5 py-3 fw-bold rounded-pill shadow">
+<i class="fa-solid fa-floppy-disk me-2"></i>
+ENREGISTRER LE PROFIL
+</button>
+</div>
+
+</form>
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+<div class="footer-studio mt-5 d-flex justify-content-between align-items-center">
+<a href="{{ url_for('index') }}" class="btn-studio-back">
+<i class="fa-solid fa-chevron-left"></i>
+</a>
+
+<div class="live-status">
+<span class="pulse-green"></span>
+SESSION SÉCURISÉE • 2026
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

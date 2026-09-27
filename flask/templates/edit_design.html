@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/design.css')}}">
+<div class="container py-4">
+  <form method="post" id="formEdit_config" class="needs-validation" novalidate>
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <!-- Nom Design -->
+        <div class="mb-3">
+          <label for="NomDesign" class="form-label">Nom Design</label>
+          <input class="form-control" id="NomDesign" type="text" name="NomDesign" value="{{design['NomDesign']}}" required>
+          <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+        </div>
+        <!-- Background -->
+        <div class="mb-3">
+          <label for="Background" class="form-label">Background</label>
+          <input class="form-control" id="Background" type="text" name="Background" value="{{design['Background']}}" required>
+          <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+        </div>
+      </div>
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <!-- Format -->
+        <div class="mb-3">
+          <label for="Format" class="form-label">Format</label>
+          <input class="form-control" id="Format" type="text" name="Format" value="{{design['Format']}}" required>
+          <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+        </div>
+        <!-- Nbre poses -->
+        <div class="mb-3">
+          <label for="NbPoses" class="form-label">Nombre de poses</label>
+          <input class="form-control" id="NbPoses" type="number" name="NbPoses" value="{{design['NbPoses']}}" required min="1" max="4">
+          <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Image Nom</th>
+            <th>PosX</th>
+            <th>PosY</th>
+            <th>Action</th>
+            <div class="mt-4">
+              <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Layers Associés</h5>
+                <!--a class="btn btn-sm btn-primary" href="{{url_for('addLayer',designs_id = designs_id, config_id = config_id)}}"-->
+                    <i class="fas fa-plus-square me-1"></i> Add
+                </a>
+            </div>
+          </tr>
+        </thead>
+        <tbody>
+          {% for layer in layers %}
+          <tr data-id="{{ layer['ID'] }}">
+            <td>
+              <input type="hidden" name="layerId" value="{{ layer['ID'] }}">
+              <input class="form-control" type="text" name="imagePath" value="{{ layer['ImageNom'] }}" required>
+            </td>
+            <td>
+              <input class="form-control" type="text" name="posX" value="{{ layer['PosX'] }}" required>
+            </td>
+            <td>
+              <input class="form-control" type="text" name="posY" value="{{ layer['PosY'] }}" required>
+            </td>
+            <td>
+              <a href="{{url_for('deleteLayer', config_id = config_id, designs_id = designs_id, layer_id = layer['ID'])}}" title="Supprimer">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-end mt-4">
+      <button type="button" class="btn"><a class="editeurBtn" href="{{url_for('edit_Template', config_id = config_id, designs_id = designs_id)}}">Mode Visuel</a></button> <!--Mode Visuel Pour la modification-->
+      <button class="btn" type="submit">Enregistrer</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

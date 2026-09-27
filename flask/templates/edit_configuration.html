@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+  <div class="container min-vh-100 d-flex justify-content-center align-items-center" data-config-id="{{config_id}}">
+    <div class="parent w-100 p-4 bg-white rounded" style="max-width: 900px;">
+      <form method="post" id="formEdit_config" class="row g-3 needs-validation" novalidate>
+        <div class="row">
+          <p>Modification configuration</p>
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <!-- Nom Config -->
+            <div class="mb-3">
+              <label for="NomConfig" class="form-label">Nom Config</label>
+              <input class="form-control" id="NomConfig" type="text" name="NomConfig" value="{{ config['NomConfig'] }}" required>
+              <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+            </div>
+
+            <!-- Date Début -->
+            <div class="mb-3">
+              <label for="dtDebut" class="form-label">Date Début</label>
+              <input class="form-control" id="dtDebutEdit" type="datetime-local" name="dtDebut" value="{{ config['dtDebut'] }}" required {% if config['bDefault'] == 1 %}readonly{% endif %}>
+              <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+            </div>
+
+          <!-- Date Fin -->
+            <div class="mb-3">
+              <label for="dtFin" class="form-label">Date Fin</label>
+              <input class="form-control" id="dtFinEdit" type="datetime-local" name="dtFin" value="{{ config['dtFin'] }}" required {% if config['bDefault'] == 1 %}readonly{% endif %}>
+              <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+            </div>
+
+            <!-- Prix -->
+            <div class="mb-3">
+                <label for="Prix" class="form-label">Prix</label>
+                <input type="number" class="form-control" id="Prix" name="Prix" value="{{ config['Prix'] }}" required min="0">
+                <div class="invalid-feedback">Please provide a price.</div>
+            </div>
+          </div>
+          
+
+          <!-- Right Column -->
+          <div class="col-md-6">
+            
+            <!-- bDefault -->
+            <div class="mb-3 form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" name="checkBdefault" value="1" id="flexCheckDefaultEdit" {% if config['bDefault'] == 1 %}checked{% endif %}>
+              <label class="form-check-label" for="flexCheckDefault">Par défaut</label>
+            </div>
+
+            <!-- IA -->
+            <div class="mb-3 form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="IASwitch" name="IA" value="1" {% if config['IA'] == 1 %}checked{% endif %}>
+              <label class="form-check-label" for="IASwitch">IA</label>
+            </div>
+
+            <!-- b choix designé -->
+            <div class="mb-3 form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="DesignSwitch" name="bChoixDesign" value="1" {% if config['bChoixDesign'] == 1 %}checked{% endif %}>
+              <label class="form-check-label" for="DesignSwitch">Choix designs multiples</label>
+            </div>
+
+            <!-- Bkpimg -->
+            <div class="mb-3 form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="BkpimgSwitch" name="Bkpimg" value="1" {% if config['Bkpimg'] == 1 %}checked{% endif %}>
+              <label class="form-check-label" for="BkpimgSwitch">Backup photos</label>
+            </div>
+
+            <!-- Bkp Path -->
+            <div class="mb-3">
+              <label for="BkpPath" class="form-label">Path backup</label>
+              <input class="form-control" id="BkpPath" type="text" name="BkpPath" value="{{ config['BkpPath'] }}" >
+            </div>
+          </div>
+        </div>
+        <!-- Submit Button -->
+        <div class="col-12 mt-4">
+          <button class="btn" type="submit" onclick="save()">Enregistrer</button>
+        </div>
+        </form>
+          <!-- Designs Table -->
+        <div class="mt-4">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <!--h5 class="card-title mb-0">Designs Associés</h5>
+            <a class="btn btn-sm btn-primary" href="{{url_for('addDesign', config_id = config_id)}}">
+              <i class="fas fa-plus-square me-1"></i> Add
+            </a-->
+            <a class="btn btn-sm btn-primary" href="{{url_for('templates.editeurTemplate', config_id = config_id)}}">
+              <i class="fas fa-plus-square me-1"></i> créer un template
+            </a>
+        </div>
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>NomDesign</th>
+                <th>Format</th>
+                <th>Nombre de poses</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for design in designs %}
+                <tr>
+                  <td>{{design['NomDesign']}}</td>
+                  <td>{{design['Format']}}</td>
+                  <td>{{design['nbposes']}}</td>
+                  <td>
+                    <div class="btn-group btn-group-sm actionHolder">
+                      <a class="icons" href="{{url_for('templates.edit_Template', design_id = design['ID'], config_id = config_id)}}">
+                        <i class="fas fa-pen"></i>
+                      </a>
+                      <a class="icons" href="#" onclick="delete_alert({{design['ID']}})">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

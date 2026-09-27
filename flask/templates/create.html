@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <form method="post" class="row g-3 needs-validation" novalidate>
+        <h5 class="mb-0">Création configuration</h5>
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <!-- Nom Config -->
+                <div class="mb-3">
+                    <label for="NomConfig" class="form-label">Nom Config</label>
+                    <input type="text" class="form-control" id="NomConfig" name="NomConfig" required>
+                    <div class="invalid-feedback">Please provide a configuration name.</div>
+                </div>
+                <!-- Date Début -->
+                <div class="mb-3">
+                <label for="dtDebut" class="form-label">Date Début</label>
+                <input class="form-control" id="dtDebutEdit" type="datetime-local" name="dtDebut" value="{{ config['dtDebut'] }}" required {% if config['bDefault'] == 1 %}readonly{% endif %}>
+                <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+                </div>
+
+            <!-- Date Fin -->
+                <div class="mb-3">
+                <label for="dtFin" class="form-label">Date Fin</label>
+                <input class="form-control" id="dtFinEdit" type="datetime-local" name="dtFin" value="{{ config['dtFin'] }}" required {% if config['bDefault'] == 1 %}readonly{% endif %}>
+                <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+                </div>
+                <!-- Prix -->
+                <div class="mb-3">
+                    <label for="Prix" class="form-label">Prix</label>
+                    <input type="number" class="form-control" id="Prix" name="Prix" value="0"required>
+                    <div class="invalid-feedback">Please provide a price.</div>
+                </div>
+            </div>
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <!-- bDefault -->
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" name="checkBdefault" value="1" id="flexCheckDefault" disabled>
+                    <label class="form-check-label" for="flexCheckDefault">bDefault</label>
+                </div>
+                <!-- IA -->
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="IASwitch" name="IA" value="1">
+                    <label class="form-check-label" for="IASwitch">IA</label>
+                </div>
+                <!-- b choix designé -->
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="DesignSwitch" name="bChoixDesign" value="1">
+                    <label class="form-check-label" for="DesignSwitch">b choix designé</label>
+                </div>
+                <!-- Bkpimg -->
+                <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="BkpimgSwitch" name="Bkpimg" value="1">
+                    <label class="form-check-label" for="BkpimgSwitch">Bkpimg</label>
+                </div>
+                <!-- Bkp Path -->
+                <div class="mb-3">
+                    <label for="BkpPath" class="form-label">Bkp Path</label>
+                    <input type="text" class="form-control" id="BkpPath" name="BkpPath" required>
+                    <div class="invalid-feedback">Please provide a backup path.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn"><
+                Créer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

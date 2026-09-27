@@ -1,0 +1,374 @@
+{
+  "id_booth": "Flashback",
+	"log_filename": "log.txt",
+	"photo_count": 4,
+	"photo_pause": 5,
+	"price":400,
+	"margin": {"x":55,"y":45},
+	"format":"2xPaysage",
+	"layers": {
+		"1": {
+			"format":"2xPaysage",
+			"img": "logo-etoile.png",
+			"x": 3200,
+			"y": 8
+		},
+		"2": {
+			"format":"2xPaysage",
+			"img": "logo-etoile.png",
+			"x": 3200,
+			"y": 1207
+		},
+		"3": {
+			"format":"10x15Paysage",
+			"img": "logo10x15.png",
+			"x": 2896,
+			"y": 2114
+		}
+    },
+	"ia":true,
+	"bkpimg":false,
+	"bkp_path":"./BkpImg/Suzon",
+	"print": true,
+	"prompt": "disco night, 70s movie, disco costume, alice in wonderland",
+	"prompts": {
+    "1A": {
+      "name": "Funky!",
+      "positive": "disco night, 70s movie, disco costume, alice in wonderland, dance club, abba",
+      "negative": "",
+      "loras": []
+    },
+    "1B": {
+      "name": "Slime",
+      "positive": "realistic, ((masterpiece)), ((best quality)), (detailed), cinematic, dynamic lighting, soft shadow, detailed background, professional photography, depth of field, intricate subsurface scattering, realistic hair,portrait,magic, smoke, bubbles, acidzlime <lora:acidzlime:1>",
+      "negative": "(low quality:1.3), (worst quality:1.3)",
+      "loras": [
+        {
+          "civitai_id": 179353,
+          "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "1C": {
+      "name": "Barbie",
+      "positive": "barbie, blue eyes, blond hair, pink background, (plastic toy playset pack), inside gift box",
+      "negative": "",
+      "loras": []
+    },
+    "1D": {
+      "name": "70's",
+      "positive": "photo of people from the 70's, 70's outfit, france, eiffel tower, french flag, concorde, minitel, 2cv, ektachrome",
+      "negative": "",
+      "loras": []
+    },
+    "1E": {
+      "name": "Romantique",
+      "positive": "realistic painting, highly detailed, flowers, people dancing in the background, in the ancient rome in the middle of celebration <lora:Oriental_romantic_paintings_by_Lawrence_Alma-Tadema_Academicism:0.5> AH_Tadema",
+      "negative": "blurry",
+      "loras": [
+        {
+          "civitai_id": 255262,
+          "civitai_version": "Oriental romantic paintings by Lawrence Alma-Tadema (Academicism)"
+        }
+      ]
+    },
+    "1F": {
+      "name": "Jantes chromées",
+      "positive": "ral-chrome, portrait, car in the background, <lora:ral-chrome-sdxl:1>",
+      "negative": "extra people, extra limbs",
+      "loras": [
+        {
+        "civitai_id": 207488,
+        "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "1G": {
+      "name": "Pixel art",
+      "positive": "portrait,  (pixel:0.8), flat, <lora:pixel-art-xl-v1.1:1>",
+      "negative": "text, watermark, blurry, deformed, depth of field, realistic, 3d render",
+      "loras": [
+        {
+          "civitai_id": 120096,
+          "civitai_version": "v1.1"
+        }
+      ]
+    },
+    "1H": {
+      "name": "Light painting",
+      "positive": "ral-exposure, high quality, photography, hdr, light painting in the background, circles of light painting above head, hair made of light painting, dark night, dark background, tree made of light painting, <lora:ral-exposure-sdxl:1>",
+      "negative": "blurry",
+      "loras": [
+        {
+          "civitai_id": 210952,
+          "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "1I": {
+      "name": "70's",
+      "positive": "people from the 70's, ektachrome",
+      "negative": "blurry, low quality",
+      "loras": []
+    },
+    "1J": {
+      "name": "Grec",
+      "positive": "portrait of a greek sculpture made of marble",
+      "negative": "",
+      "loras": []
+    },
+    "1K": {
+      "name": "80's",
+      "positive": "people from the 80's, lipstick, colored makeup, big earrings",
+      "negative": "watermark, (worst quality), (low quality), (normal quality), lowres, monochrome, greyscale",
+      "loras": []
+    },
+    "2A": {
+      "name": "Funky!",
+      "positive": "hippies, shirtless, nipples, flowers in the hair, macrame necklaces, psychedelic sky, 70's, ektachrome",
+      "negative": "blurry, people in the background, colored hair",
+      "loras": []
+    },
+    "2B": {
+      "name": "Steampunk",
+      "positive": "steampunk, portrait in front of a dilapidated saloon, <lora:SteampunkXL_V1:1>",
+      "negative": "text, watermark, signature:2, logo:2",
+      "loras": [
+        {
+          "civitai_id": 190501,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "2C": {
+      "name": "Woodstock",
+      "positive": "hippies, shirtless, nipples, flowers in the hair, macrame necklaces, psychedelic sky, 70's, ektachrome",
+      "negative": "blurry, people in the background, colored hair",
+      "loras": []
+    },
+    "2D": {
+      "name": "Frazetta",
+      "positive": "Heroic fantasy, dragons in the background, illustrative, painterly, matte painting, highly detailed, Frank Frazetta",
+      "negative": "",
+      "loras": []
+    },
+    "2E": {
+      "name": "Littérature jeunesse",
+      "positive": "2d illustration, children book illustration, spring, colorful, positive, dynamic, high quality",
+      "negative": "",
+      "loras": []
+    },
+    "2F": {
+      "name": "19 eme siecle",
+      "positive": "A black and white vintage, timeworn family photograph from 1890, rural clothing, ultra-detailed, 8k, slightly sepia tone",
+      "negative": "teeths, color, smile, smiling, smiling face, happy",
+      "loras": []
+    },
+    "2G": {
+      "name": "Coiffure",
+      "positive": "people with colored hair",
+      "negative": "",
+      "loras": []
+    },
+    "2H": {
+      "name": "Crochet",
+      "positive": "RBJ_Sewing_doll, portrait, blurry_background,photo,8k,highly detailed,digital photography,hdr,realistic,high definition,<lora:SDXL_Sewing_dol_v2:1>",
+      "negative": "embedding:BadDream,embedding:FastNegativeV2",
+      "loras": [
+        {
+          "civitai_id": 138619,
+          "civitai_version": "2.0"
+        }
+      ]
+    },
+    "2I": {
+      "name": "Cat's eyes",
+      "positive": "portrait, suit, long black hair, detailed eyes, sitting at japanese bar, 1980's, bottles, bright light <lora:xl_yoshiaki_kawajiri_v1r64:0.6>",
+      "negative": "(worst quality, low quality:1.4),",
+      "loras": [
+        {
+          "civitai_id": 149376,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "2J": {
+      "name": "Comics",
+      "positive": "Retro style artwork, comic book art, super hero, high details, comic book cover, vibrant colors",
+      "negative": "",
+      "loras": []
+    },
+    "2K": {
+      "name": "Walk like an egyptian",
+      "positive": "portrait in style of egyptian, egyptian dress, pharaon, sphynx, pyramids in the background, camels, palm trees, sunny, photorealistic",
+      "negative": "3d, text, logo, watermark, signature, extra limbs",
+      "loras": []
+    },
+    "3A": {
+      "name": "Funky",
+      "positive": "2d illustration, children book illustration, spring, colorful, positive, dynamic, high quality",
+      "negative": "",
+      "loras": []
+    },
+    "3B": {
+      "name": "Vivian Maier",
+      "positive": "portrait,street background, Vivian Maier style",
+      "negative": "",
+      "loras": []
+    },
+    "3C": {
+      "name": "Aaron Jasinski",
+      "positive": "Aaron Jasinski style",
+      "negative": "",
+      "loras": []
+    },
+    "3D": {
+      "name": "Klimt",
+      "positive": "<lora:kl1m:1>kl1m gd3y golden spirals, eyes, intricate patterns, hugging, triangles",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 125406,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "3E": {
+      "name": "Will eisner",
+      "positive": "vintage comic book with the title text: 'in bikini dura rock', with a breathtaking detailed illustration of wizards, highly detailed, <lora:wizards_vintage_comics-Undergroundf16:1>",
+      "negative": "",
+      "loras": []
+    },
+    "3F": {
+      "name": "Mucha",
+      "positive": "<lora:Alphonse Mucha Style:1>Alphonse Mucha Style, art nouveau in style of Mucha, Thick Lines, high-contrast, high-resolution high definition in details and ink outlines, no shading, intricate detailed frame border drawn by Alphonse Mucha",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 63072,
+          "civitai_version": "SD XL"
+        }
+      ]
+    },
+    "3G": {
+      "name": "Gundam",
+      "positive": "NSFW, gundam , ultra high res, best quality, photo, 4k, (photorealistic:1.4), black hair, beautiful face, beautiful eyes, mecha armor, depth of field, motion lines, <lora:RX78_SDXL_v3_loha:0.65>",
+      "negative": "",
+      "loras": []
+    },
+    "3H": {
+      "name": "Miyazaki",
+      "positive": "anime artwork Miyazaki anime style, key visual, vibrant, studio anime, highly detailed",
+      "negative": "glasses",
+      "loras": []
+    },
+    "3I": {
+      "name": "Akira Toriyama",
+      "positive": "<lora:toriy4m4_v4-000007:1>, original art full color anime in the style of akira toriyama",
+      "negative": "photo, deformed, black and white, realism, disfigured, low contrast, black and white, worst quality, bad quality, malformed face, ugly, tattoo, jpeg artifacts, disturbing, disproportioned",
+      "loras": []
+    },
+    "3J": {
+      "name": "Punk",
+      "positive": "80s punk clothing <lora:80s_punk_clothing:4> punk people",
+      "negative": "blood",
+      "loras": []
+    },
+    "3K": {
+      "name": "Van gogh",
+      "positive": "v0ng44g, p0rtr14t,  soft oil painting portrait, sunflowers, starry night backdrop, heavy brush strokes, in the style of van Gogh",
+      "negative": "txt, logo, duplicates, dupes, deformed",
+      "loras": []
+    },
+    "4A": {
+      "name": "Funky!",
+      "positive": "2d illustration, rainbow, funky people, funk, colorful",
+      "negative": "",
+      "loras": []
+    },
+    "4B": {
+      "name": "Baikonour",
+      "positive": "portrait of cosmonaut in space suit, planet earth on the background, poster, ussr, style by Andrew Atroshenko",
+      "negative": "",
+      "loras": []
+    },
+    "4C": {
+      "name": "Zombies",
+      "positive": "Zombies, blood, gore, rotten skin, photorealistic, street backdrop, <lora:UZombies:1>",
+      "negative": "",
+      "loras": []
+    },
+    "4D": {
+      "name": "Riches",
+      "positive": "portrait of rich people, gold, gold necklaces, gold earrings, lipstick, money bill, gold ring",
+      "negative": "",
+      "loras": []
+    },
+    "4E": {
+      "name": "Prince of persia",
+      "positive": "portrait of Persian, royal clothing, makeup, jewelry, wind-blown, desert, sands, dusty and foggy, bokeh, depth of field",
+      "negative": "",
+      "loras": []
+    },
+    "4F": {
+      "name": "Révolution",
+      "positive": "painting of french revolution by Eugene Delacroix, red Phrygian cap, Eugene Delacroix style",
+      "negative": "",
+      "loras": []
+    },
+    "4G": {
+      "name": "VHS",
+      "positive": "VHS tape, movie called 'Bikini', about a cheerleader, <lora:VHS_package-000028:1>",
+      "negative": "",
+      "loras": [      
+      {
+          "civitai_id": 211491,
+          "civitai_version": "v1.0"
+      }]
+    },
+    "4H": {
+      "name": "Teletubbies",
+      "positive": "portrait of teletubbies, happy faces, high quality, teletubbiesxl, <lora:teletubbiesxl1:0.1>, scenery in the background, colorful",
+      "negative": "",
+      "loras": [
+      {
+          "civitai_id": 232666,
+          "civitai_version": "v1.0"
+      }
+     ]
+    },
+    "4I": {
+      "name": "Boïte de céréales",
+      "positive": "<lora:cereal_box_sdxl_v1:1> cereals, free beer inside, box title 'Bikini', fun",
+      "negative": "low quality, warped font",
+      "loras": [
+        {
+          "civitai_id": 159677,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "4J": {
+      "name": "Oeufs au plat",
+      "positive": "portrait made of ral-friedegg,  <lora:ral-friedegg-sdxl:1>",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 255828,
+          "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "4K": {
+      "name": "Brocoli",
+      "positive": "masterpiece, best quality, portrait made out of broccoli<lora:brccl:0.75>, (high detailed skin:), 8k uhd, dslr, soft lighting, high quality, film grain, Fujifilm XT3, green background",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 253788,
+          "civitai_version": "v1.0"
+        }
+      ]
+    }
+  }
+}

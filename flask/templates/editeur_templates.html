@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/template.css')}}">
+<div class="main_body">
+        {% if mode == "create" %}
+            <div class="editor_container">
+                <span><h5>Nom:</h5><input type="text" id="nom" name="nom" class="form-control" placeholder="Nom"><span id="timedElement" class="timedElement"><p>Veillez renseigner ce champ</p></span></span>
+                <span><h5>Format:</h5>
+                    <select name="format" id="format" class="form-select">
+                    {% for format in formats %}
+                        <option value="{{ format['NOM'] }}"
+                          {% if format['NOM'] in used_format_names %}disabled{% endif %}>
+                          {{ format['NOM'] }}
+                        </option>
+                    {% endfor %}
+                    </select>
+                </span>
+                <span><h5>Nombre poses:</h5><input type="number" id="nbposes" name="nbposes" class="form-control" placeholder="Nombre poses" required min="1" max="4" value="4"></span>
+                <span><h5>Background:</h5><button type="button" class="btn btn-outline-primary selectPhotoButton w-100">Sélectionner une photo</button></span>
+            </div>
+        {% else %}
+            <form method="POST" id="editeurTemplateForm" enctype="multipart/form-data">
+                <div class="editor_container">
+                    <span><h5>Nom:</h5><input type="text" id="nom" name="nom" class="form-control" placeholder="Nom" value="{{design_name}}" required></span>
+                    <span><h5>Format:</h5>
+                        <select id="format" class="form-select" disabled>
+                            {% for format in formats %}
+                                <option value="{{format['NOM']}}" {% if design_format == format['NOM'] %} selected {% endif %}>{{format['NOM']}}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <input type="hidden" name="format" value="{{ design_format }}">
+                    </span>
+                    <span><h5>Nombre poses:</h5><input type="number" id="nbposes" name="nbposes" class="form-control" placeholder="Nombre poses" value="{{design_nbposes}}" required min="1" max="4"></span>
+                    <span><h5>Background:</h5><button type="button" class="btn btn-outline-primary selectPhotoButton w-100">Sélectionner une photo</button></span>
+                </div>
+        {% endif %} 
+        <div class="selection_photo_display mt-4 text-center">
+          <button id="serverBtn" name="serverBtn" type="button" class="btn btn-secondary me-2">Server</button>
+          <input id="uploadBtn" name="uploadBtn" type="file" accept=".jpg,.jpeg" hidden>
+          <label for="uploadBtn" class="btn btn-primary uploadBtn">Upload</label>
+        </div>  
+        <div class="Images serverImagesContainer"></div>
+        <input type="hidden" name="serverImage" id="selectedImage"> 
+        <div class="templates_container">
+            <!-- 🎯 Canvas with controlled aspect ratio -->
+            <div class="canvas-wrapper">
+                <canvas id="canvas"></canvas>
+            </div>  
+            {% if mode == "create" %}
+                <div class="templates_edit"></div>
+                    <div class="btnAjout d-flex gap-2 align-items-center">
+                        <label for="add_image" class="btn btn-success">Ajout Image</label>
+                        <input class="add_image" id="add_image" type="file" name="files[]" hidden multiple>
+                        <button class="btn btn-success" id="addTextToCanvas">Ajout texte</button>
+                    </div>
+                     <div class="textControlsContainer">
+                        <div class="textControlsContainerStyle">
+                            <div class="textControls d-none d-flex gap-2 align-items-center">
+                                <span class="textColors">
+                                    <div class="textColors d-flex gap-2 align-items-center">
+                                    <input type="color" id="textColorPicker" value="#000000" class="color-circle">
+                                    <input type="range" id="textAlphaPicker" min="0" max="1" step="0.01" value="1">
+                                    </div>
+                                </span>
+                                <span>
+                                    font-Weight: <select id="textFontWeight" class="form-select">
+                                        <option value="">--</option>
+                                        <option value="400">Regular</option>
+                                        <option value="700">Bold</option>
+                                    </select>
+                                </span>
+                                <span class="font">
+                                    Font: <select class="form-select" name="textFont" id="fontSelect">
+                                        <option value="">--</option>
+                                        <!-- SYSTEM FONTS -->
+                                        <option class="arial" value="Arial" data-source="system">Arial</option>
+                                        <option class="tnr" value="Times New Roman" data-source="system">Times New Roman</option>
+                                        <option class="cn" value="Courier New" data-source="system">Courier New</option>
+                                        <option class="georgia" value="Georgia" data-source="system">Georgia</option>
+                                        <option class="verdana" value="Verdana" data-source="system">Verdana</option>
+                                        <option class="helvetica" value="Helvetica" data-source="system">Helvetica</option>
+                                        <!-- GOOGLE FONTS -->
+                                        <option class="poppins" value="Poppins" data-source="google">Poppins</option>
+                                        <option class="montserrat" value="Montserrat" data-source="google">Montserrat</option>
+                                        <option class="roboto" value="Roboto" data-source="google">Roboto</option>
+                                        <option class="barriecito" value="Barriecito" data-source="google">Barriecito</option>
+                                        <option class="pcg" value="Playwrite CU Guides" data-source="google">Playwrite Cuba Guides</option>
+                                        <option class="jersey-10" value="Jersey 10" data-source="google">Jersey 10</option>
+                                        <option class="ballet" value="Ballet" data-source="google">Ballet</option>
+                                        <option class="italianno" value="Italianno" data-source="google">Italianno</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- First image -->
+                    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-center" id="controller">
+                      <label>X:</label>
+                      <input type="number" class="form-control w-auto pos_X" id="pos_X" size="10">
+                      <label>Y:</label>
+                      <input type="number" class="form-control w-auto pos_Y" id="pos_Y" size="10">
+                      <label>Size:</label>
+                      <input type="number" class="form-control w-auto size" id="size_1" size="10">%
+                      <button class="btn btn-danger btn-sm remove-img d-none" id="remove_first" type="button">✖</button>
+                      <button class="btn btn-secondary rotate-img d-none" id="remove_rotate_first"><i class="fa-solid fa-rotate-right"></i></button>
+                      
+                    </div>
+                    <div class="containBtn  d-flex align-items-center gap-3">
+                        <div class="d-flex gap-2 align-items-center">
+                            <button type="button" class="templateSubmit btn" id="saveTemplate">
+                                <i class="fas fa-plus-circle me-1"></i>Créer
+                            </button>
+                            <button id="delete_image" type="button" class="btn btn-danger">Reset</button>
+                        </div>
+                        <div id="signalText" style="display: none;"><p id="signalParagraphe"><i class="fa-solid fa-triangle-exclamation"></i> Attention, ce bouton va supprimer tous les éléments dans le template</p></div></div>      
+                    </div>
+                </div>
+                <br>
+                <br>
+            {% else %}
+                <div class="templates_edit">
+                    <div class="btnAjout d-flex gap-2 align-items-center">
+                        <label for="add_image" class="btn btn-success">Ajout Image</label>
+                        <input class="add_image" id="add_image" type="file" name="files[]" hidden multiple>
+                        <button class="btn btn-success" id="addTextToCanvas">Ajout texte</button>
+                    </div>
+                    <div class="textControlsContainer">
+                        <div class="textControlsContainerStyle">
+                            <div class="textControls d-none d-flex gap-2 align-items-center">
+                                <span class="textColors">
+                                    <div class="textColors d-flex gap-2 align-items-center">
+                                    <input type="color" id="textColorPicker" value="#000000" class="color-circle">
+                                    <input type="range" id="textAlphaPicker" min="0" max="1" step="0.01" value="1">
+                                    </div>
+                                </span>
+                                <span>
+                                    font-Weight: <select id="textFontWeight" class="form-select">
+                                        <option value="">--</option>
+                                        <option value="400">Regular</option>
+                                        <option value="700">Bold</option>
+                                    </select>
+                                </span>
+                                <span class="font">
+                                    Font: <select class="form-select" name="textFont" id="fontSelect">
+                                        <option value="">--</option>
+                                        <!-- SYSTEM FONTS -->
+                                        <option class="arial" value="Arial" data-source="system">Arial</option>
+                                        <option class="tnr" value="Times New Roman" data-source="system">Times New Roman</option>
+                                        <option class="cn" value="Courier New" data-source="system">Courier New</option>
+                                        <option class="georgia" value="Georgia" data-source="system">Georgia</option>
+                                        <option class="verdana" value="Verdana" data-source="system">Verdana</option>
+                                        <option class="helvetica" value="Helvetica" data-source="system">Helvetica</option>
+                                        <!-- GOOGLE FONTS -->
+                                        <option class="poppins" value="Poppins" data-source="google">Poppins</option>
+                                        <option class="montserrat" value="Montserrat" data-source="google">Montserrat</option>
+                                        <option class="roboto" value="Roboto" data-source="google">Roboto</option>
+                                        <option class="barriecito" value="Barriecito" data-source="google">Barriecito</option>
+                                        <option class="pcg" value="Playwrite CU Guides" data-source="google">Playwrite Cuba Guides</option>
+                                        <option class="jersey-10" value="Jersey 10" data-source="google">Jersey 10</option>
+                                        <option class="ballet" value="Ballet" data-source="google">Ballet</option>
+                                        <option class="italianno" value="Italianno" data-source="google">Italianno</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- First image -->
+                <div class="d-flex flex-wrap gap-2 align-items-center justify-content-center" id="controller">
+                    <label>X:</label>
+                    <input type="number" class="form-control w-auto pos_X" id="pos_X" size="10">
+                    <label>Y:</label>
+                    <input type="number" class="form-control w-auto pos_Y" id="pos_Y" size="10">
+                    <label>Size:</label>
+                    <input type="number" class="form-control w-auto size" id="size_1" size="10">%
+                    <button class="btn btn-danger btn-sm remove-img d-none" id="remove_first">✖</button>
+                    <button class="btn btn-secondary rotate-img d-none" id="remove_rotate_first"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+                    
+                <div class="containBtn  d-flex align-items-center gap-3">
+                    <div class="d-flex gap-2 align-items-center">
+                        <button type="button" class="btn" id="editTemplate">Enregistrer</button>
+                        <button id="delete_image" type="button" class="btn btn-danger">Reset</button>
+                    </div>
+                    <div id="signalText" style="display: none;"><p id="signalParagraphe"><i class="fa-solid fa-triangle-exclamation"></i> Attention, ce bouton va supprimer tous les éléments dans le template</p></div>
+                </div>
+            <input type="hidden" id="designID" value="{{design_id}}">
+        </div>
+    </form>
+    {% endif %}
+</div>
+
+{% if mode  == "create" %}
+    <script>
+        const CONFIG_ID = {{config_id}}
+    </script>
+{% else %}
+    <script>
+        const MODE = "{{ mode }}";
+        const DESIGN_ID = document.getElementById('designID').value
+        const CONFIG_ID = {{config_id}}
+        {% if background %}
+            const BACKGROUND_BASE64 = "data:image/png;base64,{{background}}";
+        {% else %}
+            const BACKGROUND_BASE64 = null;
+        {% endif %}
+
+        const LAYERS = {{ layers | tojson | safe }};
+        const EXISTING_LAYERS = {{ layers|tojson }};
+    </script>
+{% endif %}
+
+{% endblock %}

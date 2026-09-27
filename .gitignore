@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+*.log
+log.txt
+crontab.log
+venv/
+myvenv/
+base/booth/
+flask/flask/
+.vscode/

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="card-title mb-0">Configuration Details</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Format</dt>
+                <dd class="col-sm-9">{{details['Format']}}</dd>
+
+                <dt class="col-sm-3">Background</dt>
+                <dd class="col-sm-9">{{details['Background']}}</dd>
+
+                <dt class="col-sm-3">Nom Design</dt>
+                <dd class="col-sm-9">{{details['NomDesign']}}</dd>
+
+                <dt class="col-sm-3">bDefault</dt>
+                <dd class="col-sm-9">{{details['bDefault']}}</dd>
+
+                <dt class="col-sm-3">Prix</dt>
+                <dd class="col-sm-9">{{details['Prix']}}</dd>
+
+                <dt class="col-sm-3">Bkpimg</dt>
+                <dd class="col-sm-9">{{details['Bkpimg']}}</dd>
+
+                <dt class="col-sm-3">Nombre de poses</dt>
+                <dd class="col-sm-9">{{details['nbPOSES']}}</dd>
+
+                <dt class="col-sm-3">IA</dt>
+                <dd class="col-sm-9">{{details['IA']}}</dd>
+
+                <dt class="col-sm-3">BChoixDesign</dt>
+                <dd class="col-sm-9">{{details['bChoixDesign']}}</dd>
+
+                <dt class="col-sm-3">Date</dt>
+                <dd class="col-sm-9">{{details['Date']}}</dd>
+
+                <dt class="col-sm-3">ModePaiement</dt>
+                <dd class="col-sm-9">{{details['ModePaiement']}}</dd>
+
+                <dt class="col-sm-3">Repertoire</dt>
+                <dd class="col-sm-9">{{details['Repertoire']}}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="container-img">
+    {% for image in images %}
+        <div class="Photos">
+            <img class="img-photo" src="{{ url_for('serve_image', photo_id=photo_id, folder_name=folder_name, filename=image) }}" 
+                 alt="Image">
+        </div>
+    {% endfor %}
+</div>
+<a href="{{ url_for('printer', photo_id=photo_id) }}"><button class="btn">🖨️ Imprimer</button></a>
+{% endblock %}

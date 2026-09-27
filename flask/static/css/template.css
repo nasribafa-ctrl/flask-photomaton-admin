@@ -1,0 +1,151 @@
+/*.templateSubmit{
+    position: absolute;
+    left: 20%;
+    right: auto;
+    bottom: -50vh;
+}*/
+
+.containDelBtn{
+    display: grid;
+    grid-template-columns: repeat(2, 250px);
+}
+
+.canvasTextManagement{
+    display: grid;
+    grid-template-columns: repeat(2, 250px);
+}
+
+.timedElement {
+    display: none;
+}
+
+.serverImagesContainer{
+    background-color: bisque;
+}
+
+/*control du text dans le canvas*/
+/*.textControlsContainer{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}*/
+.textControlsContainerStyle{
+    padding-right: 20%;
+}
+.btnAjoutText{
+    padding-left: 50%;
+}
+/*.textControls{
+    display: grid;
+    grid-template-columns: repeat(2, 250px);
+}*/
+/* Firefox */
+.color-circle::-moz-color-swatch {
+  border-radius: 50%;
+  border: none;
+}
+.color-circle {
+  -webkit-appearance: none;
+  appearance: none;
+
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+}
+
+.square-full-red{
+    color: red;
+    cursor: pointer;
+}
+.square-full-blue{
+    color: blue;
+    cursor: pointer;
+}
+.square-full-yellow{
+    color: yellow;
+    cursor: pointer;
+}
+.square-full-black{
+    color: black;
+    cursor: pointer;
+}
+.square-full-white{
+    color: white;
+    border: solid 2px black;
+    cursor: pointer;
+}
+.square-full-green{
+    color: green;
+    cursor: pointer;
+}
+.square-full-pink{
+    color: pink;
+    cursor: pointer;
+}
+.square-full-violet{
+    color: violet;
+    cursor: pointer;
+}
+.square-full-turquoise{
+    color: turquoise;
+    cursor: pointer;
+}
+.square-full-beige{
+    color: beige;
+    cursor: pointer;
+}
+/*fonts du select*/
+.arial{
+    font-family: "Arial";
+}
+.tnr{
+    font-family: "Times New Roman";
+}
+.cn{
+    font-family: "Courier New";
+}
+.georgia{
+    font-family: "Georgia";
+}
+.verdana{
+    font-family: "Verdana";
+}
+.helvetica{
+    font-family: "Helvetica";
+}
+.poppins{
+    font-family: "Poppins";
+}
+.montserrat{
+    font-family: "Montserrat";
+}
+.roboto{
+    font-family: "Roboto";
+}
+.barriecito{
+    font-family: "Barriecito";
+}
+.pcg{
+    font-family: "Playwrite CU Guides";
+}
+.jersey-10{
+    font-family: "Jersey 10";
+}
+.ballet{
+    font-family: "Ballet";
+    font-size: 20px;
+}
+.italianno{
+    font-family: "Italianno";
+    font-size: 20px;
+}
+
+/*css pour surligner les inputs lié a l'image*/
+.control-active {
+  outline: 1px solid #0d6efd;
+  background: rgba(13, 110, 253, 0.08);
+  border-radius: 6px;
+}

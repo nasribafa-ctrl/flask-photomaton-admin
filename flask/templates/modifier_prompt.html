@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+    <h3 class="mb-4">Modifier le prompt : {{ prompt.name }}</h3>
+
+    <form method="POST" class="card p-4 shadow-sm">
+
+        <!-- Prompt positif -->
+        <div class="mb-3">
+            <label for="selectionpositive" class="form-label fw-bold">
+                Instruction positive
+            </label>
+
+            <select
+                name="positive_select"
+                id="selectionpositive"
+                class="form-select mb-2"
+                style="max-height: 160px; overflow-y: auto;"
+            >
+                <option value="">Sélectionner une suggestion</option>
+
+                {% for p in positive_suggestion %}
+                    <option value="{{ p }}">
+                        {{ p[:80] }}{% if p|length > 80 %}…{% endif %}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <textarea
+                id="textareapositive"
+                name="positive"
+                class="form-control"
+                rows="4"
+            >{{ prompt.positive }}</textarea>
+        </div>
+
+        <!-- Prompt négatif -->
+        <div class="mb-3">
+            <label for="textareanegative" class="form-label fw-bold">
+                Instruction négative
+            </label>
+
+            <textarea
+                id="textareanegative"
+                name="negative"
+                class="form-control mb-2"
+                rows="4"
+            >{{ prompt.negative }}</textarea>
+
+            <select
+                name="negative_select"
+                id="selectionnegative"
+                class="form-select"
+                style="max-height: 160px; overflow-y: auto;"
+            >
+                <option value="">Sélectionner une suggestion</option>
+
+                {% for p in negative_suggestion %}
+                    <option value="{{ p }}">
+                        {{ p }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Choix de la pose -->
+        
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-between align-items-center">
+
+            <a href="{{ url_for('prompt') }}" class="btn btn-outline-secondary">
+                Retour
+            </a>
+
+            <button type="submit" class="btn btn-success">
+                Enregistrer
+            </button>
+
+            <button
+                type="submit"
+                formaction="{{ url_for('utiliser_prompt', prompt_id=prompt.ID) }}"
+                formmethod="post"
+                class="btn btn-dark"
+            >
+                Tester
+            </button>
+
+        </div>
+
+    </form>
+
+    <div class="mt-4 border-top pt-4">
+    <p class="fw-bold text-muted small uppercase">Sélectionne une image pour le Test ter  :</p>
+    
+    <div class="row g-2">
+        {% for i in range(0, 4) %}
+        <div class="col-md-3">
+            <label class="card text-center" style="cursor: pointer;">
+                <img src="{{ url_for('serve_ia_base_images', filename=i|string + '.jpg') }}" 
+                     class="card-img-top" style="height: 100px; object-fit: cover;">
+                
+                <div class="card-body p-2">
+                    <input type="radio" name="pose_id" value="{{ i }}" {% if i == 0 %}checked{% endif %}>
+                    <span class="small">image {{ i }}</span>
+                </div>
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+<script src="{{ url_for('static', filename='js/modifier_prompt.js') }}"></script>
+
+{% endblock %}
+

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <form method="post" class="needs-validation" novalidate>
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Add Design</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nomDesign" class="form-label">Nom Design</label>
+                                <input type="text" class="form-control" id="nomDesign" name="nomDesign" required>
+                                <div class="invalid-feedback">Veillez renseigner un Nom de Design.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="format" class="form-label">Format</label>
+                                <input type="text" class="form-control" id="format" name="format" required>
+                                <div class="invalid-feedback">veillez renseigner le format du Design.</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="background" class="form-label">Background</label>
+                                <input type="text" class="form-control" id="background" name="background" required>
+                                <div class="invalid-feedback">veillez renseigner le background du Design(dois finir par .jpg .png selon le format du fichier).</div>
+                            </div>
+                            <!-- Nbre poses -->
+                            <div class="mb-3">
+                            <label for="NbPoses" class="form-label">Nombre de poses</label>
+                            <input class="form-control" id="NbPoses" type="number" name="NbPoses" value="{{design['NbPoses']}}" required>
+                            <div class="invalid-feedback">Veuillez renseigner ce champ.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-end">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-plus-circle me-1"></i> Ajouter le Design
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

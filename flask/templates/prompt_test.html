@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+
+    <h3 class="mb-4">Analyse et vérification du prompt</h3>
+
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            Informations générales
+        </div>
+        <div class="card-body">
+            <p><strong>Nom du prompt :</strong> {{ prompt.name }}</p>
+            <p><strong>Identifiant :</strong> {{ prompt.ID }}</p>
+            <p><strong>État du prompt :</strong> {{ analyse.status }}</p>
+        </div>
+    </div>
+       
+    {% if nom_image %}
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                Résultat de la génération
+            </div>
+            <div class="card-body text-center">
+                <img 
+                    src="{{ url_for('image_ia', nom_image=nom_image) }}" 
+                    alt="Résultat IA"
+                    class="img-fluid rounded shadow"
+                    style="max-height: 350px;"
+                >
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            Contenu du prompt
+        </div>
+        <div class="card-body">
+
+            <p><strong>Instruction positive :</strong></p>
+            <p>
+                {% if analyse.est_positive %}
+                    {{ prompt.positive }}
+                {% else %}
+                    <em>Aucune instruction positive n’a été définie.</em>
+                {% endif %}
+            </p>
+
+            <p><strong>Instruction négative :</strong></p>
+            <p>
+                {% if analyse.est_negative %}
+                    {{ prompt.negative }}
+                {% else %}
+                    <em>Aucune instruction négative n’a été définie.</em>
+                {% endif %}
+            </p>
+
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header bg-light">
+            Analyse automatique du contenu
+        </div>
+        <div class="card-body">
+            <ul class="mb-0">
+                <li>
+                    Présence d’une instruction positive :
+                    <strong>{{ "Oui" if analyse.est_positive else "Non" }}</strong>
+                </li>
+                <li>
+                    Présence d’une instruction négative :
+                    <strong>{{ "Oui" if analyse.est_negative else "Non" }}</strong>
+                </li>
+                <li>
+                    Longueur de l’instruction positive :
+                    {{ analyse.positive_longeur }} caractères
+                </li>
+                <li>
+                    Longueur de l’instruction négative :
+                    {{ analyse.negative_longeur }} caractères
+                </li>
+            </ul>
+        </div>
+    </div>
+
+  <div class="text-end">
+
+    {% if temp_mode %}
+        <!-- cas : test depuis CREATION -->
+        <a href="{{ url_for('creer_prompt') }}" class="btn btn-secondary">
+            ← Retour à la création
+        </a>
+
+    {% else %}
+        <!-- cas : test depuis MODIFICATION -->
+        <a href="{{ url_for('modifier_prompt', prompt_id=prompt.ID) }}"
+           class="btn btn-secondary">
+            ← Retour à la modification
+        </a>
+    {% endif %}
+
+</div>
+
+
+</div>
+
+{% endblock %}

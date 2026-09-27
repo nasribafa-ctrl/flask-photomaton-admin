@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <div class="mb-3">
+        <a href="{{ url_for('index') }}"
+           class="btn btn-link text-decoration-none p-0">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+
+    <h3 class="mb-4">Gestion des prompts</h3>
+
+    <div class="d-flex justify-content-end mb-3">
+    <a href="{{ url_for('creer_prompt') }}"
+       class="btn btn-success">
+        + Créer un prompt
+    </a>
+</div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center align-middle">
+
+            <thead class="table-light">
+                <tr>
+                    <th>Nom</th>
+                    <th>Pose associée</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for prompt in prompts %}
+                <tr>
+                    <div class="modal fade" id="deleteModal{{ prompt.ID }}" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer ce prompt ?
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annuler
+        </button>
+
+        <form method="POST"
+              action="{{ url_for('supprimer_prompt', prompt_id=prompt.ID) }}">
+            <button type="submit" class="btn btn-danger">
+                Supprimer
+            </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+                    <td>
+                        {{ prompt.name }}
+                    </td>
+
+                    <td>
+                        <form
+                            id="form-pose-{{ prompt.ID }}"
+                            method="POST"
+                            action="{{ url_for('enregistrer_pose', prompt_id=prompt.ID) }}"
+                        >
+                            <select
+                                name="pose_id"
+                                class="form-select"
+                                onchange="gererChoixPose(this, {{ prompt.ID }})"
+                            >
+                                <option value="0" {% if poses[prompt.ID] == 0 %}selected{% endif %}>
+                                    — Sélectionner —
+                                </option>
+                                <option value="1" {% if poses[prompt.ID] == 1 %}selected{% endif %}>Pose 1</option>
+                                <option value="2" {% if poses[prompt.ID] == 2 %}selected{% endif %}>Pose 2</option>
+                                <option value="3" {% if poses[prompt.ID] == 3 %}selected{% endif %}>Pose 3</option>
+                                <option value="4" {% if poses[prompt.ID] == 4 %}selected{% endif %}>Pose 4</option>
+
+
+                                <option value="add" class="text-primary fw-bold">+ Ajouter une pose...</option>
+                            </select>
+                        </form>
+                    </td>
+
+                   <td>
+    <div class="d-flex justify-content-center align-items-center gap-3">
+
+        <!-- modifier -->
+        <a href="{{ url_for('modifier_prompt', prompt_id=prompt.ID) }}"
+           class="text-primary fs-5"
+           title="Modifier">
+            <i class="fas fa-pen"></i>
+        </a>
+
+        <!-- supprimer -->
+        <form method="POST"
+              action="{{ url_for('supprimer_prompt', prompt_id=prompt.ID) }}">
+           
+
+            <button type="button"
+        class="btn p-0 text-danger fs-5"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteModal{{ prompt.ID }}"
+        title="Supprimer">
+    <i class="fas fa-trash"></i>
+</button>
+
+        </form>
+
+    </div>
+</td>
+
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/prompt.js') }}"></script>
+<script src="{{ url_for('static', filename='js/choix_pose.js') }}"></script>
+
+
+{% endblock %}

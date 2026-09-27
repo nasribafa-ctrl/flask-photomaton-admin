@@ -1,0 +1,115 @@
+Voici le schéma de la base de données généré à partir du fichier `bdd.py`, avec les tables, leurs relations et les champs clés :
+
+---
+
+### **Schéma de la base de données `booth.db`**
+
+#### **1. Table `PHOTOMATON`**  
+- **Description** : Stocke les informations du photomaton.  
+- **Clé primaire** : `ID` (auto-incrémenté).  
+- **Relations** :  
+  - `1-N` avec `CONFIGURATION` (via `ID_PHOTOMATON`).  
+- **Champs** :  
+  ```sql
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  Nom VARCHAR(20),
+  FormatDefaut VARCHAR(10),
+  TPECP INT,                     -- Durée entre les poses (photo_pause)
+  bPRINT BOOL DEFAULT 1,         -- Impression activée ?
+  bLEDSTRIP BOOL DEFAULT 0,      -- Bandes LED activées ?
+  bROTATE_MATRIX BOOL DEFAULT 0, -- Rotation de la matrice LED ?
+  bANALOG_READ BOOL DEFAULT 0    -- Lecture analogique (potentiomètres) ?
+  ```
+
+#### **2. Table `CONFIGURATION`**  
+- **Description** : Configurations associées à un photomaton.  
+- **Clé primaire** : `ID` (auto-incrémenté).  
+- **Clé étrangère** : `ID_PHOTOMATON` → `PHOTOMATON(ID)`.  
+- **Champs** :  
+  ```sql
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  bDefault BOOL DEFAULT 0,       -- Config par défaut ?
+  Prix INT,                      -- Prix (price)
+  Bkpimg BOOL,                   -- Sauvegarde des images ?
+  BkpPath VARCHAR(255),          -- Chemin de sauvegarde
+  dtDebut DATETIME DEFAULT CURRENT_TIMESTAMP,
+  dtFin DATETIME DEFAULT CURRENT_TIMESTAMP,
+  nbPOSES INT,                   -- Nombre de poses (photo_count)
+  ID_PHOTOMATON INT,             -- Lien vers PHOTOMATON
+  IA BOOL DEFAULT 0,             -- IA activée ?
+  FOREIGN KEY (ID_PHOTOMATON) REFERENCES PHOTOMATON(ID)
+  ```
+
+#### **3. Table `DESIGN`**  
+- **Description** : Designs associés à une configuration.  
+- **Clé primaire** : `ID` (auto-incrémenté).  
+- **Clé étrangère** : `ID_CONFIG` → `CONFIGURATION(ID)`.  
+- **Champs** :  
+  ```sql
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  Format VARCHAR(10),            -- Format (2xPortrait, 2xPaysage, etc.)
+  Background VARCHAR(255),       -- Fichier d'arrière-plan
+  ID_CONFIG INT,                -- Lien vers CONFIGURATION
+  FOREIGN KEY (ID_CONFIG) REFERENCES CONFIGURATION(ID)
+  ```
+
+#### **4. Table `LAYER`**  
+- **Description** : Calques (éléments graphiques) d'un design.  
+- **Clé primaire** : `ID` (auto-incrémenté).  
+- **Clé étrangère** : `ID_DESIGN` → `DESIGN(ID)`.  
+- **Champs** :  
+  ```sql
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  ImagePath VARCHAR(255),       -- Chemin de l'image
+  PosX INT,                     -- Position X
+  PosY INT,                     -- Position Y
+  ID_DESIGN INT,                -- Lien vers DESIGN
+  FOREIGN KEY (ID_DESIGN) REFERENCES DESIGN(ID)
+  ```
+
+#### **5. Table `PHOTO`**  
+- **Description** : Historique des photos prises.  
+- **Clé primaire** : `ID` (auto-incrémenté).  
+- **Clés étrangères** :  
+  - `ID_PHOTOMATON` → `PHOTOMATON(ID)`  
+  - `ID_DESIGN` → `DESIGN(ID)`  
+- **Champs** :  
+  ```sql
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  ID_PHOTOMATON INT,           -- Lien vers PHOTOMATON
+  Date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  ModePaiement VARCHAR(10),     -- "Espèce", "Carte Bancaire", etc.
+  Repertoire VARCHAR(255),      -- Dossier de stockage
+  ID_DESIGN INT,               -- Lien vers DESIGN
+  FOREIGN KEY (ID_PHOTOMATON) REFERENCES PHOTOMATON(ID),
+  FOREIGN KEY (ID_DESIGN) REFERENCES DESIGN(ID)
+  ```
+
+---
+
+### **Diagramme des relations**  
+```
+PHOTOMATON (1) ── (N) CONFIGURATION (1) ── (N) DESIGN (1) ── (N) LAYER
+       │                                           │
+       └───────────────────────────────────────────┘
+                              PHOTO
+```
+
+### **Explications**  
+1. **Flux principal** :  
+   - Un `PHOTOMATON` a plusieurs `CONFIGURATION` (dont une par défaut).  
+   - Une `CONFIGURATION` a plusieurs `DESIGN` (formats d'image).  
+   - Un `DESIGN` a plusieurs `LAYER` (éléments graphiques superposés).  
+
+2. **Historique** :  
+   - Chaque `PHOTO` est liée à un `PHOTOMATON` et un `DESIGN`.  
+
+3. **Contraintes** :  
+   - `PRAGMA foreign_keys = ON` active la vérification des clés étrangères.  
+
+---
+
+### **Notes**  
+- Les champs comme `bPRINT` ou `IA` sont des booléens stockés comme `0/1` en SQLite.  
+- Les chemins (`ImagePath`, `BkpPath`) sont stockés en texte.  
+- Le schéma est optimisé pour suivre l'architecture du code (ex: `loadConfig()` utilise ces jointures).  

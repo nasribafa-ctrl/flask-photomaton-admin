@@ -1,0 +1,371 @@
+{
+  "id_booth": 3,
+	"log_filename": "log.txt",
+	"photo_count": 4,
+	"photo_pause": 5,
+	"add_logo": true,
+	"logo1_name":"logoStPatrick.png",
+	"logo2_name":"logoStPatrick.png",
+	"logo1_pos": {"x":29,"y":32},
+	"logo2_pos": {"x":29,"y":1236},
+	"margin": {"x":65,"y":35},
+  "mode":"classique",
+	"arduino_json": false,
+	"vertical": false,
+	"usb_stick": false,
+	"usb_stick_adr": "/media/usb0/BOOTH",
+  "bkpimg":false,
+  "bkp_path":"./BkpImg/Little",
+	"print": true,
+	"prompt": "disco night, 70s movie, disco costume, alice in wonderland",
+  "prompts": {
+    "1A": {
+      "name": "Photorealiste",
+      "positive": "jockey on his galloping black horse in front of a white wall, black coat, white trousers, black horseriding helmet, black horse, photography,made by photographer from ",
+      "negative": "blurry, shadows, white horse, ugly, cartoon, drawing",
+      "loras": []
+    },
+    "1B": {
+      "name": "Photorealiste",
+      "positive": "jockey on his galloping black horse in front of a white wall, black coat, white trousers, black horseriding helmet, black horse, photography, kodachrome, made by photographer from ",
+      "negative": "blurry, shadows, white horse, ugly, cartoon, drawing",
+      "loras": []
+    },
+    "1C": {
+      "name": "Photorealiste",
+      "positive": "jockey on his galloping black horse in front of a white wall, black coat, white trousers, black horseriding helmet, black horse, photography, kodachrome, polaroid, made by photographer from ",
+      "negative": "blurry, shadows, white horse, ugly, cartoon, drawing",
+      "loras": []
+    },
+    "1D": {
+      "name": "Photorealiste",
+      "positive": "jockey on his galloping black horse in front of a white wall, black coat, white trousers, black horseriding helmet, black horse, digital photography, dslr, photorealistic, made by photographer from ",
+      "negative": "blurry, shadows, white horse, ugly, cartoon, drawing",
+      "loras": []
+    },
+    "1E": {
+      "name": "Romantique",
+      "positive": "realistic painting, highly detailed, flowers, people dancing in the background, in the ancient rome in the middle of celebration <lora:Oriental_romantic_paintings_by_Lawrence_Alma-Tadema_Academicism:0.5> AH_Tadema",
+      "negative": "blurry",
+      "loras": [
+        {
+          "civitai_id": 255262,
+          "civitai_version": "Oriental romantic paintings by Lawrence Alma-Tadema (Academicism)"
+        }
+      ]
+    },
+    "1F": {
+      "name": "Jantes chromées",
+      "positive": "ral-chrome, portrait, car in the background, <lora:ral-chrome-sdxl:1>",
+      "negative": "extra people, extra limbs",
+      "loras": [
+        {
+        "civitai_id": 207488,
+        "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "1G": {
+      "name": "Pixel art",
+      "positive": "portrait, (pixel:0.8), flat",
+      "negative": "text, watermark, blurry, deformed, depth of field, realistic, 3d render",
+      "loras": [
+        {
+          "civitai_id": 120096,
+          "civitai_version": "v1.1"
+        }
+      ]
+    },
+    "1H": {
+      "name": "Light painting",
+      "positive": "ral-exposure, high quality, photography, hdr, light painting in the background, circles of light painting above head, dark night, dark background, tree made of light painting, <lora:ral-exposure-sdxl:1>",
+      "negative": "blurry",
+      "loras": [
+        {
+          "civitai_id": 210952,
+          "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "1I": {
+      "name": "Ikea",
+      "positive": "<lora:ikea_instructions_xl_v1_5:1>",
+      "negative": "blurry, low quality",
+      "loras": [
+        {
+          "civitai_id": 153586,
+          "civitai_version": "v1.5"
+        }
+      ]
+    },
+    "1J": {
+      "name": "Grec",
+      "positive": "portrait of a greek sculpture made of marble",
+      "negative": "",
+      "loras": []
+    },
+    "1K": {
+      "name": "Escalator",
+      "positive": "masterpiece, best quality, escalator,a bustling cityscape,escalator-art <lora:escalator-art:0.7>",
+      "negative": "watermark, (worst quality), (low quality), (normal quality), lowres, monochrome, greyscale, simple background",
+      "loras": [
+        {
+          "civitai_id": 253857,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "2A": {
+      "name": "Ecorché vif",
+      "positive": "split head and body, split skinless dissected body, ancient hospital operating room in the background with crazy surgeons",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 206883,
+          "civitai_version": "still experimental"
+        }
+      ]
+    },
+    "2B": {
+      "name": "Steampunk",
+      "positive": "steampunk, portrait in front of a dilapidated saloon.",
+      "negative": "text, watermark, signature:2, logo:2",
+      "loras": [
+        {
+          "civitai_id": 190501,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "2C": {
+      "name": "Woodstock",
+      "positive": "portrait of a man at Woodstock festival in 1969, old phone, hippie festival, hippies smoking in the background, analog film, ektachrome 100, nsfw",
+      "negative": "",
+      "loras": []
+    },
+    "2D": {
+      "name": "Heroic fantasy",
+      "positive": "Heroic fantasy, dragons in the background, illustrative, painterly, matte painting, highly detailed, Frank Frazetta",
+      "negative": "",
+      "loras": []
+    },
+    "2E": {
+      "name": "Littérature jeunesse",
+      "positive": "2d illustration, children book illustration, spring, colorful, positive, dynamic, high quality",
+      "negative": "",
+      "loras": []
+    },
+    "2F": {
+      "name": "19 eme siecle",
+      "positive": "A black and white vintage, timeworn family photograph from 1890, rural clothing, ultra-detailed, 8k, slightly sepia tone",
+      "negative": "",
+      "loras": []
+    },
+    "2G": {
+      "name": "La bagarre",
+      "positive": "portrait, fight in a bar, people fighting in the background, walls with old pictures and neon signs, slightly swollen head, black eye, bruised skin, nsfw ",
+      "negative": "drawing, cartoon, blurry, pink skin, red skin",
+      "loras": []
+    },
+    "2H": {
+      "name": "Crochet",
+      "positive": "RBJ_Sewing_doll, portrait, blurry_background,photo,8k,highly detailed,digital photography,hdr,realistic,high definition,<lora:SDXL_Sewing_dol_v2:1>",
+      "negative": "embedding:BadDream,embedding:FastNegativeV2",
+      "loras": [
+        {
+          "civitai_id": 138619,
+          "civitai_version": "2.0"
+        }
+      ]
+    },
+    "2I": {
+      "name": "Cat's eyes",
+      "positive": "portrait, suit, long black hair, detailed eyes, sitting at japanese bar, 1980's, bottles, bright light <lora:xl_yoshiaki_kawajiri_v1r64:0.6>",
+      "negative": "(worst quality, low quality:1.4),",
+      "loras": [
+        {
+          "civitai_id": 149376,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "2J": {
+      "name": "Comics",
+      "positive": "Retro style artwork, comic book art, high details, comic book cover, symmetrical, vibrant colors",
+      "negative": "",
+      "loras": []
+    },
+    "2K": {
+      "name": "Walk like an egyptian",
+      "positive": "portrait in style of egyptian, egyptian dress, pharaon, sphynx, pyramids in the background, camels, palm trees, sunny, photorealistic",
+      "negative": "3d, text, logo, watermark, signature, extra limbs",
+      "loras": []
+    },
+    "3A": {
+      "name": "Frida Kahlo",
+      "positive": "portrait, unibrow,single-brow, flowers, parrots, old phone, painting by Frida kahlo style",
+      "negative": "",
+      "loras": []
+    },
+    "3B": {
+      "name": "Vivian Maier",
+      "positive": "portrait, man, street background, Vivian Maier style",
+      "negative": "",
+      "loras": []
+    },
+    "3C": {
+      "name": "Aaron Jasinski",
+      "positive": "Aaron Jasinski style",
+      "negative": "",
+      "loras": []
+    },
+    "3D": {
+      "name": "Klimt",
+      "positive": "<lora:kl1m:1>kl1m gd3y golden spirals, eyes, intricate patterns, hugging, triangles",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 125406,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "3E": {
+      "name": "Julie mehretu",
+      "positive": " julie mehretu style",
+      "negative": "",
+      "loras": []
+    },
+    "3F": {
+      "name": "Mucha",
+      "positive": "<lora:Alphonse Mucha Style:1>Alphonse Mucha Style, art nouveau in style of Mucha, Thick Lines, high-contrast, high-resolution high definition in details and ink outlines, no shading, intricate detailed frame border drawn by Alphonse Mucha",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 63072,
+          "civitai_version": "SD XL"
+        }
+      ]
+    },
+    "3G": {
+      "name": "Abigail Larson",
+      "positive": "Abigail Larson style",
+      "negative": "",
+      "loras": []
+    },
+    "3H": {
+      "name": "Miyazaki",
+      "positive": "anime artwork Miyazaki anime style, key visual, vibrant, studio anime, highly detailed",
+      "negative": "",
+      "loras": []
+    },
+    "3I": {
+      "name": "Akira Toriyama",
+      "positive": "Akira Toriyama style",
+      "negative": "",
+      "loras": []
+    },
+    "3J": {
+      "name": "Alejandro Burdisio",
+      "positive": "portrait, Alejandro Burdisio style",
+      "negative": "",
+      "loras": []
+    },
+    "3K": {
+      "name": "Magali Villeneuve",
+      "positive": "Magali Villeneuve style",
+      "negative": "",
+      "loras": []
+    },
+    "4A": {
+      "name": "Tout nu sous la douche",
+      "positive": "naked under the shower, very nsfw, highly detailed, photorealistic, cosy bathroom background",
+      "negative": "towel, blurry, unfocused, smudged, extra hands, clothes",
+      "loras": []
+    },
+    "4B": {
+      "name": "Baikonour",
+      "positive": "portrait of cosmonaut in space suit, planet earth on the background, poster, ussr, style by Andrew Atroshenko",
+      "negative": "",
+      "loras": []
+    },
+    "4C": {
+      "name": "Zombies",
+      "positive": "Zombies, blood, gore, photorealistic, nsfw, zombie unicorn in the background",
+      "negative": "",
+      "loras": []
+    },
+    "4D": {
+      "name": "Triangle",
+      "positive": "people with hat made from toasted triangle sandwiches, lettuce, chicken meat, sauce, very happy people, good food, 'miam miam' text",
+      "negative": "noisy, sloppy, messy, grainy, highly detailed, ultra textured, photo",
+      "loras": []
+    },
+    "4E": {
+      "name": "Prince of persia",
+      "positive": "portrait of Persian, royal clothing, makeup, jewelry, wind-blown, desert, sands, dusty and foggy, bokeh, depth of field",
+      "negative": "",
+      "loras": []
+    },
+    "4F": {
+      "name": "Révolution",
+      "positive": "painting of french revolution by Eugene Delacroix, red Phrygian cap, Eugene Delacroix style",
+      "negative": "",
+      "loras": []
+    },
+    "4G": {
+      "name": "VHS",
+      "positive": "VHS tape, movie called 'Dada', about a cheerleader",
+      "negative": "",
+      "loras": [      
+      {
+          "civitai_id": 211491,
+          "civitai_version": "v1.0"
+      }]
+    },
+    "4H": {
+      "name": "Teletubbies",
+      "positive": "portrait of people dressed like teletubbies, happy faces, high quality, teletubbiesxl, <lora:teletubbiesxl1:0.4>, scenery in the background, colorful",
+      "negative": "",
+      "loras": [
+      {
+          "civitai_id": 232666,
+          "civitai_version": "v1.0"
+      }
+     ]
+    },
+    "4I": {
+      "name": "Boïte de céréales",
+      "positive": "<lora:cereal_box_sdxl_v1:0.9> cereals, free beer inside, box title 'Dada', fun",
+      "negative": "low quality, warped font",
+      "loras": [
+        {
+          "civitai_id": 159677,
+          "civitai_version": "v1.0"
+        }
+      ]
+    },
+    "4J": {
+      "name": "Oeufs au plat",
+      "positive": "portrait made of ral-friedegg,  <lora:ral-friedegg:1>",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 255828,
+          "civitai_version": "SDXL"
+        }
+      ]
+    },
+    "4K": {
+      "name": "Brocoli",
+      "positive": "masterpiece, best quality, portrait made out of broccoli<lora:brccl:0.75>, (high detailed skin:), 8k uhd, dslr, soft lighting, high quality, film grain, Fujifilm XT3, green background",
+      "negative": "",
+      "loras": [
+        {
+          "civitai_id": 253788,
+          "civitai_version": "v1.0"
+        }
+      ]
+    }
+  }
+}

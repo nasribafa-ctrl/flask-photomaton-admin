@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MinutePapillons</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="icon" href="{{url_for('static', filename='img/Minute-Papillons-2-150x150.png')}}">
+    <script src="https://kit.fontawesome.com/02a74f5624.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
+    <script src="{{url_for('static', filename='js/app.js')}}"></script>
+    <script src="{{url_for('static', filename='js/edit_config.js')}}"></script>
+    {% if mode == "create" %}
+        <script src="{{url_for('static', filename='js/create_templates.js')}}"></script>
+    {% else %}
+        <script src="{{url_for('static', filename='js/edit_templates.js')}}"></script>
+    {% endif %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/camera-control.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barriecito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+CU+Guides&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ballet&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="userIcon" id="userIcon" style="cursor: pointer;">
+        <i class="fa-solid fa-circle-user"></i>
+    </div>
+
+    {% if session.get('username') %}
+    <a href="{{url_for('logout')}}" class="logoutTop">
+      <i class ="fa-solid fa-right-from-bracket"> </i>
+    
+    </a>
+
+    {% endif %}
+
+    <div class="returnArrow">
+       {% if Return == "index" %}
+           <a class="arrowContainer" href="{{url_for('index')}}">
+               <i class="fa-solid fa-arrow-left"></i>
+           </a>
+       {% elif Return == "config" %}
+           <a class="arrowContainer" href="{{url_for('edit_configuration', config_id = config_id)}}">
+               <i class="fa-solid fa-arrow-left"></i>
+           </a>
+       {% elif Return == "design" %}
+           <a class="arrowContainer" href="{{url_for('Design', designs_id = design_id)}}">
+               <i class="fa-solid fa-arrow-left"></i>
+           </a>
+       {% endif %}
+    </div>
+    
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-form position-relative">
+            <div class="close-btn" id="closeLogin" style="cursor: pointer;">&times;</div>
+        
+            {# Utilisation de la session au lieu de current_user #}
+            {% if session.get('username') %}
+                <div class="text-center">
+                    <p>Bienvenue, <strong>{{ session.get('username') }}</strong></p>
+                    
+                    <hr>
+                    {# Le bouton Créer un compte apparaît seulement pour l'admin #}
+                    {% if session.get('role') == 'admin' %}
+                        <a href="{{ url_for('liste_utilisateurs') }}" class="btn btn-success w-100 mb-2">
+                            <i class="fa-solid fa-user-plus"></i> Créer un compte
+                        </a>
+                        <a href="{{ url_for('liste_utilisateurs') }}" class="list-group-item list-group-item-action">
+                            <i class="fa-solid fa-users-gear me-2"></i> Gérer les utilisateurs
+                        </a>
+                    {% endif %}
+                    
+                    <!--  modif 1 deplacement du bouton déconnexion
+
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger w-100">
+                        <i class="fa-solid fa-power-off"></i> DÉCONNEXION
+                    </a>
+
+                    -->
+                    
+                </div>
+            {% else %}
+                {# Formulaire de connexion si non connecté #}
+                <form method="POST" action="{{ url_for('login') }}">
+                    <h5 class="text-center mb-3">Connexion</h5>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="Identifiant" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="logo text-center my-3">
+        <a class="photomaton1" href="{{url_for('index')}}" style="text-decoration: none;">
+            <p class="photomaton">{% block title %}{% endblock %}</p>
+        </a>
+    </div>
+    <p id="output" class="d- none"></p>
+
+    {% block body %}{% endblock %}
+</body>
+</html>

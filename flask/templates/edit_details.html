@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <form method="post">
+        <table class="table">
+            <tr>
+                <td class="table-head">Format</td>
+                <td class="table-head">Background</td>
+                <td class="table-head">Nom</td>
+                <td class="table-head">bDefault</td>
+                <td class="table-head">Prix</td>
+                <td class="table-head">Bkpimg</td>
+                <td class="table-head">IA</td>
+                <td class="table-head">BChoixDesign</td>
+                <td class="table-head">Date</td>
+                <td class="table-head">ModePaiement</td>
+                <td class="table-head">Repertoire</td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Format" value="{{ details['Format'] }}"></td>
+                <td><input type="text" name="Background" value="{{ details['Background'] }}"></td>
+                <td><input type="text" name="NomDesign" value="{{ details['NomDesign'] }}"></td>
+                <td><input type="text" name="bDefault" value="{{ details['bDefault'] }}"></td>
+                <td><input type="text" name="Prix" value="{{ details['Prix'] }}"></td>
+                <td><input type="text" name="Bkpimg" value="{{ details['Bkpimg'] }}"></td>
+                <td><input type="text" name="IA" value="{{ details['IA'] }}"></td>
+                <td><input type="text" name="bChoixDesign" value="{{ details['bChoixDesign'] }}"></td>
+                <td><input type="text" name="Date" value="{{ details['Date'] }}"></td>
+                <td><input type="text" name="ModePaiement" value="{{ details['ModePaiement'] }}"></td>
+                <td><input type="text" name="Repertoire" value="{{ details['Repertoire'] }}"></td>
+            </tr>
+        </table>
+        <button type="submit" class="btn">Modifier</button>
+    </form>
+{% endblock %}
