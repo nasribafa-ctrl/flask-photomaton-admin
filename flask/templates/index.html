@@ -37,7 +37,7 @@
                         <dd class="col-sm-6">{{photomatons['date_MAJ']}}</dd>
 
 
-                        {% if session.get('role') and session.get('role').strip().upper() == 'ADMIN' %}
+                        {% if has_role('admin') %}
                              <dd class="col-sm-6">
                               <a href="/prompt" class="btn btn-sm btn-primary">
                                   Prompts
@@ -66,7 +66,7 @@
         <div class="col-12 px-0">
             <div class="d-flex justify-content-between align-items-center">
 
-            {% if session['role'] == 'ADMIN' %}
+            {% if has_role('admin') %}
                 
                 <button id="startButton" class="btn btn-success ms-auto">
                     <i class="fas fa-play me-2"></i>Lancer photos
@@ -141,7 +141,7 @@
                     <!--Modification ajoute du dflex gap 2 pour lespace entre les bouton -->
                     <div class="row mt-3">
                         <div class="col-12 d-flex gap-2">
-                            {% if session['role'] == 'ADMIN' or session['role'] == 'MODIFICATION' %}
+                            {% if has_role('admin', 'modification') %}
                             <button id="refreshSettings" class="btn btn-outline-secondary">
                                 <i class="fas fa-sync-alt me-1"></i>Enregistrer
                             </button>
@@ -183,7 +183,7 @@
     <div class="card shadow mb-4">
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">Configurations</h5>
-            {% if session['role'] == 'ADMIN'%}
+            {% if has_role('admin') %}
             <a class="btn btn-sm btn-primary" href="{{url_for('add')}}">
                 <i class="fas fa-plus-square me-1"></i> Créer
             </a>
@@ -235,7 +235,7 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm actionHolder d-flex align-items-center gap-3">
-                                    {% if session['role'] == 'ADMIN' or session['role'] == 'MODIFICATION' %}
+                                    {% if has_role('admin', 'modification') %}
                                     <a class="icons" href="{{url_for('edit_configuration', config_id=configs['ID'])}}">
                                         <i class="fas fa-pen"></i>
                                     </a>
@@ -244,11 +244,13 @@
                                         <i class ="fas fa-lock me-2"></i>Bouton verouillé
                                     </button>
                                 {% endif %}
-                                {% if session['role'] == 'ADMIN' or session['role'] == 'SUPPRESSION' %}
+                                {% if has_role('admin', 'suppression') %}
                                     {% if configs['bDefault'] != 1 %}
-                                        <a class="icons" href="{{url_for('delete', config_id = configs['ID'])}}" onclick="return delete_alert()">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                        <form method="POST" action="{{url_for('delete', config_id = configs['ID'])}}" class="d-inline" onsubmit="return confirm('Supprimer cette configuration ?')">
+                                            <button type="submit" class="icons btn btn-link p-0 border-0" title="Supprimer">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
                                     {% endif %}
                                 {% endif %}
                                 </div>

@@ -66,7 +66,7 @@
                     
                     <hr>
                     {# Le bouton Créer un compte apparaît seulement pour l'admin #}
-                    {% if session.get('role') == 'admin' %}
+                    {% if has_role('admin') %}
                         <a href="{{ url_for('liste_utilisateurs') }}" class="btn btn-success w-100 mb-2">
                             <i class="fa-solid fa-user-plus"></i> Créer un compte
                         </a>

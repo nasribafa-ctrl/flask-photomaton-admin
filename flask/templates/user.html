@@ -116,13 +116,13 @@ CENTRE DE CONTRÔLE
 <div class="d-flex flex-wrap gap-1 role-stack">
 {% if user['Role'] %}
 {% for role in user['Role'].split(',') %}
-{% set r = role.strip() | upper %}
+{% set r = role.strip() | lower %}
 <span class="badge-role-dynamic
-{% if 'ADMIN' in r %}br-admin
-{% elif 'SUPPRESSION' in r %}br-delete
-{% elif 'MODIFICATION' in r %}br-edit
+{% if 'admin' in r %}br-admin
+{% elif 'suppression' in r %}br-delete
+{% elif 'modification' in r %}br-edit
 {% else %}br-read{% endif %}">
-{{ r }}
+{{ r | upper }}
 </span>
 {% endfor %}
 {% else %}
@@ -193,22 +193,22 @@ CRÉER UN NOUVEAU PROFIL
 <div class="d-flex gap-4 flex-wrap">
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="roles" value="LECTURE">
+<input class="form-check-input" type="checkbox" name="roles" value="lecture">
 <label class="form-check-label">Lecture</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="roles" value="MODIFICATION">
+<input class="form-check-input" type="checkbox" name="roles" value="modification">
 <label class="form-check-label">Modification</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="roles" value="SUPPRESSION">
+<input class="form-check-input" type="checkbox" name="roles" value="suppression">
 <label class="form-check-label">Suppression</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="roles" value="ADMIN">
+<input class="form-check-input" type="checkbox" name="roles" value="admin">
 <label class="form-check-label">Admin</label>
 </div>
 

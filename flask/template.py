@@ -12,6 +12,7 @@ UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','bas
 
 sys.path.append(base_path)
 from bdd import *
+from auth import role_required
 
 name = get_nom()
 
@@ -21,6 +22,7 @@ templates_bp = Blueprint(
 )
 
 @templates_bp.route('/api/template-slots/<format_name>')
+@role_required('lecture')
 def api_template_slots(format_name):
     format_row = getFormatIdByName(format_name)
     if not format_row:
@@ -52,6 +54,7 @@ def api_template_slots(format_name):
     return jsonify(payload)
 
 @templates_bp.route('/<int:config_id>/editeur_templates', methods=['GET', 'POST'])
+@role_required('modification')
 def editeurTemplate(config_id):
     format = get_format()
     usedFormat = get_design_linked_with_config(config_id)
@@ -65,6 +68,7 @@ def editeurTemplate(config_id):
     return render_template('editeur_templates.html',config_id=config_id,server_images=server_images,name=name,nbposes=nbposes,mode="create",Return="config", formats = format,used_format_names=used_format_names)
 
 @templates_bp.route('/<int:config_id>/editeur_templates/<int:design_id>', methods=['GET'])
+@role_required('modification')
 def edit_Template(config_id, design_id):
 
     layers = get_layers(design_id)
@@ -89,6 +93,7 @@ def edit_Template(config_id, design_id):
     return render_template( "editeur_templates.html", mode="edit", design_id=design_id, design_nbposes=design['NBPOSES'], design_name=design['NomDesign'], design_format=design['Format'], layers=layers_payload, background=background_b64, Return="config", config_id=config_id, formats=formats)
 
 @templates_bp.route('/saveTemplate', methods=['POST'])
+@role_required('modification')
 def saveTemplate():
     data = request.get_json()
 
@@ -146,6 +151,7 @@ def saveTemplate():
     return jsonify({"success": True, "design_id": design_id})
 
 @templates_bp.route('/update_template', methods=['POST'])
+@role_required('modification')
 def update_template():
 
     data = request.get_json()

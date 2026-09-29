@@ -85,9 +85,9 @@ and try every permission level without touching the database:
 | Login          | Password     | Role(s)                              |
 |----------------|--------------|---------------------------------------|
 | `demo_admin`   | `Demo1234!`  | admin                                 |
-| `demo_lecture` | `Demo1234!`  | LECTURE                               |
-| `demo_editeur` | `Demo1234!`  | LECTURE, MODIFICATION, SUPPRESSION    |
-| `demo_modif`   | `Demo1234!`  | MODIFICATION                          |
+| `demo_lecture` | `Demo1234!`  | lecture                               |
+| `demo_editeur` | `Demo1234!`  | lecture, modification, suppression    |
+| `demo_modif`   | `Demo1234!`  | modification                          |
 
 These replace the original team's real accounts — same roles, fresh scrypt
 password hashes, fictitious logins/password.

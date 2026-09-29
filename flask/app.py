@@ -13,6 +13,7 @@ import base64
 from PIL import Image
 import io
 from template import templates_bp
+from auth import normalize_roles, has_role, login_required, role_required, admin_required
 import hashlib
 from base.ia import save_ia_image
 from werkzeug.utils import secure_filename
@@ -52,19 +53,6 @@ from bdd import *
 
 name = get_nom()
 
-def admin_required(view_func):
-    @wraps(view_func)
-    def wrapper(*args, **kwargs):
-        if 'user_id' not in session:
-            flash('Veuillez vous connecter.', 'warning')
-            return redirect(url_for('login'))
-        # On vérifie si le rôle enregistré en session est bien 'admin'
-        if 'admin' not in session.get('permissions', []):
-            flash('Accès refusé : réservé aux administrateurs.', 'danger')
-            return redirect(url_for('index'))
-        return view_func(*args, **kwargs)
-    return wrapper
-
 app = Flask(__name__)
 app.secret_key = os.environ["SECRET_KEY"]
 
@@ -79,7 +67,8 @@ def inject_user():
             'is_logged_in': 'user_id' in session,
             'username': session.get('username'),
             'role': session.get('role')
-        }
+        },
+        'has_role': has_role
     }
 
 @app.route('/Authentification', methods=['GET', 'POST'])
@@ -90,15 +79,15 @@ def login():
 
     if request.method == 'POST':
         # 1. On récupère proprement les données du formulaire
-        username = request.form.get('username')
-        pwd = request.form.get('password')
+        username = request.form.get('username', '')
+        pwd = request.form.get('password', '')
         
         # 2. On cherche l'utilisateur via la fonction getLogin (de bdd.py)
         user = getLogin(username)
 
         # 3. Vérification de sécurité
         # check_password_hash compare le texte clair (pwd) avec le hash (user['Mdp'])
-        if user and check_password_hash(user['Mdp'], pwd):
+        if user and pwd and check_password_hash(user['Mdp'], pwd):
             # On vide la session avant de la remplir pour éviter les vieux résidus
             session.clear()
             
@@ -107,12 +96,9 @@ def login():
             session['username'] = user['Login']
             
             # Gestion du rôle : si c'est vide en BDD, on met 'user' par défaut
-            session['role'] = user['Role'] if user['Role'] else 'user'
-
-            if user['Role']:
-                 session['permissions'] = user['Role'].split(',')
-            else:
-                 session['permissions'] = []
+            permissions = normalize_roles(user['Role'])
+            session['permissions'] = permissions
+            session['role'] = ",".join(permissions) if permissions else 'user'
 
             flash('Heureux de vous revoir, ' + user['Login'] + ' !', 'success')
             return redirect(url_for('index'))
@@ -131,11 +117,8 @@ def logout():
     flash('Logged out.', 'info')
     return redirect(url_for('login'))
 @app.route('/')
+@role_required('lecture')
 def index():
-
-    # vérifie si utilisateur connecté
-    if 'role' not in session:
-        return redirect(url_for('login'))
 
     # 1. On récupère les données et on s'assure que ce sont des listes
     try:
@@ -173,8 +156,8 @@ def index():
         formats=formats
     )
 
-@admin_required
 @app.route('/admin/utilisateurs', methods=['GET', 'POST'])
+@admin_required
 def liste_utilisateurs():
     
 
@@ -184,7 +167,7 @@ def liste_utilisateurs():
         username = request.form.get('username')
         pwd = request.form.get('password')
         confirmer_mdp = request.form.get('confirmer_mdp')
-        roles = request.form.getlist('roles')  # IMPORTANT
+        roles = normalize_roles(request.form.getlist('roles'))  # IMPORTANT
 
         # Vérification champs obligatoires
         if not username or not pwd:
@@ -237,7 +220,7 @@ def liste_utilisateurs():
    
 
 @app.route('/photo/<int:photo_id>')
-@admin_required
+@role_required('lecture')
 def photo(photo_id):
     try:
         # 1. Récupérer le nom brut depuis 
@@ -293,14 +276,14 @@ def photo(photo_id):
         return f"Erreur interne : {str(e)}", 500
 
 @app.route('/serve_image/<int:photo_id>/<folder_name>/<filename>')
-@admin_required
+@role_required('lecture')
 def serve_image(photo_id, folder_name, filename):
     # Path to captures
     directory = os.path.join(base_path, 'captures', folder_name)
     return send_from_directory(directory, filename)
 
 @app.route('/printer/<int:photo_id>', methods = ['GET','POST'])
-@admin_required
+@role_required('modification')
 def printer(photo_id):
     repertoire = get_folder_name_from_db(photo_id)
     Format = get_format(photo_id)
@@ -308,7 +291,7 @@ def printer(photo_id):
     return "Printing started", 200
 
 @app.route('/add', methods=['GET', 'POST'])
-@admin_required
+@role_required('modification')
 def add():
     if request.method == 'POST':
         form = request.form
@@ -319,7 +302,7 @@ def add():
     return render_template('create.html', name=name, Return = "index")
 
 @app.route('/<int:config_id>/edit_configuration', methods=['GET', 'POST'])
-@admin_required
+@role_required('modification')
 def edit_configuration(config_id):
     if request.method == 'POST':
             
@@ -337,7 +320,7 @@ def edit_configuration(config_id):
     return render_template('edit_configuration.html', config=config, name = name, designs = design, config_id = config_id, Return = "index")
 
 @app.route('/<int:config_id>/add/design', methods = ['GET', 'POST'])
-@admin_required
+@role_required('modification')
 def addDesign(config_id):
     if request.method == "POST":
         form = request.form
@@ -345,8 +328,8 @@ def addDesign(config_id):
         return redirect(url_for('edit_configuration', config_id = config_id))
     return render_template('createDesign.html', name = name, config_id = config_id)
 
-@app.route('/<int:config_id>/delete')
-#@admin_required
+@app.route('/<int:config_id>/delete', methods=['POST'])
+@role_required('suppression')
 def delete(config_id):
     design_id = get_design_Id_linked_with_config(config_id)
 
@@ -356,7 +339,7 @@ def delete(config_id):
     return redirect(url_for('index'))
 
 @app.route('/delete_design/<int:designs_id>', methods=['POST'])
-#@admin_required
+@role_required('suppression')
 def deleteDesign(designs_id):
     delDesign(designs_id)
     delLayerAssocieADesign(designs_id)
@@ -390,7 +373,7 @@ def delete_user(user_id):
     return redirect(url_for('liste_utilisateurs'))
 
 @app.route('/list_images')
-@admin_required
+@role_required('lecture')
 def list_images():
     folder = assets_path
     files = []
@@ -400,7 +383,7 @@ def list_images():
     return jsonify(files)
 
 @app.route('/base/assets/<path:filename>')
-@admin_required
+@role_required('lecture')
 def serve_assets(filename):
     return send_from_directory(assets_path, filename)
 
@@ -413,24 +396,25 @@ def get_filenames(files):
 
 #upload folder image selection handler
 @app.route('/upload', methods=['POST'])
-@admin_required
+@role_required('modification')
 def upload():
     files = request.files.getlist('files[]')
     filenames = get_filenames(files)
     return jsonify({"files": filenames})
 
 @app.route('/uploads/<filename>')
-@admin_required
+@role_required('lecture')
 def uploaded_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 @app.route('/base/captures/<template>/<filename>')
-@admin_required
+@role_required('lecture')
 def serve_captures(template, filename):
     folder = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','base','captures',template))
     return send_from_directory(folder, filename)
 
 @app.route('/printerStatus', methods=['POST'])
+@role_required('modification')
 def changePrinterStatus():
     data = request.get_json(silent=True)
 
@@ -441,6 +425,7 @@ def changePrinterStatus():
     return jsonify({"success": True})
 
 @app.route('/changeIndexFormat', methods=['POST'])
+@role_required('modification')
 def changeIndexFormat():
     data = request.get_json(silent=True)
 
@@ -499,6 +484,7 @@ if CAMERA:
             })
 
 @app.route('/prompt')
+@role_required('lecture')
 def prompt():
     prompts = getAllPrompts()
 
@@ -516,7 +502,13 @@ def prompt():
     )
 
 @app.route('/prompt/<int:prompt_id>/edit', methods=['GET', 'POST'])
+@role_required('modification')
 def modifier_prompt(prompt_id):
+    prompt = getPromptFromId(prompt_id)
+    if not prompt:
+        flash("Prompt introuvable", "danger")
+        return redirect(url_for('prompt'))
+
     if request.method =="POST":
 
         positive = request.form.get("positive")
@@ -526,7 +518,7 @@ def modifier_prompt(prompt_id):
 
         if not positive or not positive.strip():
              flash("Prompt positif requis", "warning")
-             return redirect(url_for("creer_prompt"))
+             return redirect(url_for("modifier_prompt", prompt_id=prompt_id))
 
 
        
@@ -535,8 +527,7 @@ def modifier_prompt(prompt_id):
         updatePrompt(positive,negative,prompt_id,pose_id)
 
         return redirect(url_for('prompt'))
-    
-    prompt= getPromptFromId(prompt_id)
+
 
     rows_positive = getPromptPositiveNotNull()
 
@@ -555,6 +546,7 @@ def modifier_prompt(prompt_id):
 
 
 @app.route('/prompt/<int:prompt_id>/test', methods=['GET','POST'])
+@role_required('modification')
 def utiliser_prompt(prompt_id):
 
 
@@ -626,6 +618,7 @@ def utiliser_prompt(prompt_id):
     )
 
 @app.route("/ia/<path:nom_image>")
+@role_required('lecture')
 def image_ia(nom_image):
     return send_from_directory(
         os.path.join(base_path, "ia_images"),
@@ -633,6 +626,7 @@ def image_ia(nom_image):
     )
 
 @app.route('/prompt/<int:prompt_id>/pose', methods=['POST'])
+@role_required('modification')
 def enregistrer_pose(prompt_id):
     pose_id = request.form.get("pose_id", type=int)
 
@@ -660,6 +654,7 @@ def enregistrer_pose(prompt_id):
 
 
 @app.route('/ia_images/<filename>')
+@role_required('lecture')
 def serve_ia_base_images(filename):
 
 
@@ -670,6 +665,7 @@ def serve_ia_base_images(filename):
 
 
 @app.route("/prompt/create", methods=["GET", "POST"])
+@role_required('modification')
 def creer_prompt():
 
     name = get_nom()   
@@ -734,6 +730,7 @@ def creer_prompt():
 
 
 @app.route("/prompt/<int:prompt_id>/delete", methods=["POST"])
+@role_required('suppression')
 def supprimer_prompt(prompt_id):
 
     conn = get_db_connection()
@@ -756,6 +753,7 @@ def supprimer_prompt(prompt_id):
 
 
 @app.route("/prompt/test-create")
+@role_required('modification')
 def tester_prompt_creer():
 
     prompt = session.get("prompt_creationTest")
