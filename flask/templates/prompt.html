@@ -15,12 +15,14 @@
 
     <h3 class="mb-4">Gestion des prompts</h3>
 
+    {% if has_role('modification') %}
     <div class="d-flex justify-content-end mb-3">
     <a href="{{ url_for('creer_prompt') }}"
        class="btn btn-success">
         + Créer un prompt
     </a>
 </div>
+    {% endif %}
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover text-center align-middle">
@@ -36,6 +38,7 @@
             <tbody>
                 {% for prompt in prompts %}
                 <tr>
+                    {% if has_role('suppression') %}
                     <div class="modal fade" id="deleteModal{{ prompt.ID }}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -65,6 +68,7 @@
     </div>
   </div>
 </div>
+                    {% endif %}
 
 
                     <td>
@@ -81,6 +85,7 @@
                                 name="pose_id"
                                 class="form-select"
                                 onchange="gererChoixPose(this, {{ prompt.ID }})"
+                                {% if not has_role('modification') %}disabled{% endif %}
                             >
                                 <option value="0" {% if poses[prompt.ID] == 0 %}selected{% endif %}>
                                     — Sélectionner —
@@ -100,13 +105,16 @@
     <div class="d-flex justify-content-center align-items-center gap-3">
 
         <!-- modifier -->
+        {% if has_role('modification') %}
         <a href="{{ url_for('modifier_prompt', prompt_id=prompt.ID) }}"
            class="text-primary fs-5"
            title="Modifier">
             <i class="fas fa-pen"></i>
         </a>
+        {% endif %}
 
         <!-- supprimer -->
+        {% if has_role('suppression') %}
         <form method="POST"
               action="{{ url_for('supprimer_prompt', prompt_id=prompt.ID) }}">
            
@@ -120,6 +128,7 @@
 </button>
 
         </form>
+        {% endif %}
 
     </div>
 </td>

@@ -37,7 +37,7 @@
                         <dd class="col-sm-6">{{photomatons['date_MAJ']}}</dd>
 
 
-                        {% if has_role('admin') %}
+                        {% if has_role('modification') %}
                              <dd class="col-sm-6">
                               <a href="/prompt" class="btn btn-sm btn-primary">
                                   Prompts
@@ -183,7 +183,7 @@
     <div class="card shadow mb-4">
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">Configurations</h5>
-            {% if has_role('admin') %}
+            {% if has_role('modification') %}
             <a class="btn btn-sm btn-primary" href="{{url_for('add')}}">
                 <i class="fas fa-plus-square me-1"></i> Créer
             </a>

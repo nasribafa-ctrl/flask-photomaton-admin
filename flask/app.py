@@ -55,6 +55,12 @@ name = get_nom()
 
 app = Flask(__name__)
 app.secret_key = os.environ["SECRET_KEY"]
+# Cookie de session : illisible par le JavaScript de la page (HttpOnly)
+# et non envoyé par les formulaires POST venant d'un autre site (SameSite=Lax)
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+MIN_PASSWORD_LENGTH = 8
 
 app.register_blueprint(templates_bp)
 
@@ -172,6 +178,11 @@ def liste_utilisateurs():
         # Vérification champs obligatoires
         if not username or not pwd:
             flash("Tous les champs sont obligatoires.", "warning")
+            return redirect(url_for('liste_utilisateurs'))
+
+        # Longueur minimale du mot de passe
+        if len(pwd) < MIN_PASSWORD_LENGTH:
+            flash(f"Le mot de passe doit contenir au moins {MIN_PASSWORD_LENGTH} caractères.", "warning")
             return redirect(url_for('liste_utilisateurs'))
 
         # Vérification confirmation mot de passe
